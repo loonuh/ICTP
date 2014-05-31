@@ -83,7 +83,9 @@ for j = 2:L
     end
 end
 %%        
-    
+pcolor(M)
+title('M matrix, is this supposed to by symmetric like this?')
+colorbar
 if plots
     figure
     bar(MAX(2,:),MAX(1,:),'g');
