@@ -1,16 +1,20 @@
 close all
 clear all
 
+plots = 1;
 D = 1000;
 L = 53;
 q = 21;
 
-plots = 0;
 DATA = load('data.txt');
 n = zeros(L,q);
 nn = zeros(L,L,q,q);
 ww = zeros(L,L,q,q);
 M = zeros(L,L);
+dists = load('distances.txt');
+squeezeM = zeros(4,L*L);
+counter = 0;
+
 
 %------------------------------------------------------%
 %   II. MODELING BY PSWM                               %
@@ -69,7 +73,11 @@ for j = 2:L
         end
     end
 end
-%%
+
+%------------------------------------------------------%
+%                  Build M matrix                      %
+%------------------------------------------------------%
+
 for j = 2:L
     clc
     fprintf('Calculating M_ij: %5.2f %% \n',(j-1)/(L-1)*100)
@@ -84,12 +92,8 @@ for j = 2:L
 end
 
 %------------------------------------------------------%
-%           Assign distances to pairs                   %
+%            Assign distances to pairs                 %
 %------------------------------------------------------%
-
-dists = load('distances.txt');
-squeezeM = zeros(4,L*L);
-counter = 0;
 
 for j = 2:L
     for i = 1:j-1
@@ -110,7 +114,6 @@ for i = 1:size(sortM,2)
     sortM(4,i) = dists(extractVal,end);
 end
 
-
 %------------------------------------------------------%
 %Determine the fraction of pairs that have < 8 distance%
 %------------------------------------------------------%
@@ -123,36 +126,22 @@ while 2^(i-1) < size(sortM,2)
         i=i+1;
 end
 
-if 1
-subplot(1,3,1);bar(sortM(4,:))
-title('All distances for pairs')
-xlabel('Rank by M');
-ylabel('Distance');
-axis tight
-
-index3 = find(sortM(4,:) < 8);
-subplot(1,3,2);bar(index3,sortM(4,index3));
-title('Distances <= 8')
-xlabel('Rank by M');
-ylabel('Distance');
-axis([min(index3),max(index3),min(sortM(4,:)),max(sortM(4,:))])
-
-subplot(1,3,3);plot(index4,frac);axis tight
-title('Fraction of pair-distances < 8 vs. Number of pairs considered');
-ylabel('Fraction of pair-distances < 8');
-xlabel('Number of pairs considered');
-end
-%%
-
-
 if plots
-    figure
-    bar(MAX(2,:),MAX(1,:),'g');
-    axis([1 53 .5 1])
+    subplot(1,3,1);bar(sortM(4,:))
+    title('All distances for pairs')
+    xlabel('Rank by M');
+    ylabel('Distance');
+    axis tight
     
-    figure
-    pcolor(omega); shading interp
+    index3 = find(sortM(4,:) < 8);
+    subplot(1,3,2);bar(index3,sortM(4,index3));
+    title('Distances <= 8')
+    xlabel('Rank by M');
+    ylabel('Distance');
+    axis([min(index3),max(index3),min(sortM(4,:)),max(sortM(4,:))])
     
-    figure
-    pcolor(DATA); shading interp
+    subplot(1,3,3);plot(index4,frac);axis tight
+    title('Fraction of pair-distances < 8 vs. Number of pairs considered');
+    ylabel('Fraction of pair-distances < 8');
+    xlabel('Number of pairs considered');
 end

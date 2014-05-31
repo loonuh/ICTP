@@ -1,21 +1,29 @@
 close all
 clear all
 
-D = 1000;
-L = 53;
-q = 21;
+%------------------------------------------------------%
+% Load Data, Preallocating Variables, Plots(On/Off) %                           %
+%------------------------------------------------------%
+D = 1000; %Number of Sequences in database
+L = 53; %Length of Sequences 
+q = 21; %Number of nucleotides in {A,C,...Y,-}
 
-plots = 1;
+%------------------------------------------------------%
+% Load Data, Preallocating Variables, Plots(On/Off) %                           %
+%------------------------------------------------------%
 DATA = load('data.txt');
-n = zeros(L,q);
-nn = zeros(L,L,q,q);
-ww = zeros(L,L,q,q);
-M = zeros(L,L);
+n = zeros(L,q); %n(a)_i
+nn = zeros(L,L,q,q); %n(a,b)_{i,j}
+ww = zeros(L,L,q,q); %w(a,b)_{i,j}
+M = zeros(L,L); %M_{i,j}
+dists = load('distances.txt'); %Distances
+squeezeM = zeros(4,L*L); %For building M
+counter = 0;
 
+plots = 1; %Plots (On/Off;1/0)
 %------------------------------------------------------%
 %   II. MODELING BY PSWM                               %
 %------------------------------------------------------%
-
 for i = 1:D
     for j = 1:L
         n(j,DATA(i,j)) = n(j,DATA(i,j)) + 1; 
@@ -40,7 +48,6 @@ end
 %------------------------------------------------------%
 %   III. CO-EVOLUTION OF CONTACT RESIDUES              %
 %------------------------------------------------------%
-
 for seqNumb = 1:D
     clc
     fprintf('Calculating n_ij: %5.2f %% \n',seqNumb/D*100)
@@ -73,7 +80,6 @@ end
 %------------------------------------------------------%
 %                  Build M matrix                      %
 %------------------------------------------------------%
-
 for j = 2:L
     clc
     fprintf('Calculating M_ij: %5.2f %% \n',(j-1)/(L-1)*100)
@@ -90,11 +96,6 @@ end
 %------------------------------------------------------%
 %            Assign distances to pairs                 %
 %------------------------------------------------------%
-
-dists = load('distances.txt');
-squeezeM = zeros(4,L*L);
-counter = 0;
-
 for j = 2:L
     for i = 1:j-1
         counter = counter+1;
@@ -117,7 +118,6 @@ end
 %------------------------------------------------------%
 %Determine the fraction of pairs that have < 8 distance%
 %------------------------------------------------------%
-
 i = 1;
 while 2^(i-1) < size(sortM,2)  
         index4(i) = 2^(i-1);
@@ -126,6 +126,9 @@ while 2^(i-1) < size(sortM,2)
         i=i+1;
 end
 
+%------------------------------------------------------%
+%                      Plots                           %
+%------------------------------------------------------%
 if plots
     subplot(1,3,1);bar(sortM(4,:))
     title('All distances for pairs')
