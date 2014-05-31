@@ -1,8 +1,14 @@
 close all
 clear all
+%------------------------------------------------------%
+%      Weigst Statistical Biophysics Project @ ICTP    %
+%                                                      %
+% Code By: Riccardo Giuseppe Margiotta,                %
+%          Agnese Curatolo, and Christopher Luna       %
+%------------------------------------------------------%
 
 %------------------------------------------------------%
-% Load Data, Preallocating Variables, Plots(On/Off) %                           %
+%             Set Dataset Parameters                   %
 %------------------------------------------------------%
 D = 1000; %Number of Sequences in database
 L = 53; %Length of Sequences 
@@ -118,6 +124,7 @@ end
 %------------------------------------------------------%
 %Determine the fraction of pairs that have < 8 distance%
 %------------------------------------------------------%
+clc
 i = 1;
 while 2^(i-1) < size(sortM,2)  
         index4(i) = 2^(i-1);
