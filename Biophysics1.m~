@@ -77,22 +77,16 @@ for j = 2:L
         for a = 1:q
             for b = 1:q
                 M(i,j) = M(i,j) ...
-                    + ww(i,j,a,b)*log(ww(i,j,a,b))/(omega(i,a)*omega(j,b));
+                    + ww(i,j,a,b)*log(ww(i,j,a,b)/omega(i,a)/omega(j,b));
             end
         end
     end
 end
-%%
-dists = load('distances.txt');
-matSort = reshape(M)
-
-for j = 2:L
-    for i = 1:j-1
-        
-        
-    
-
-
+%%       
+M = M'+M
+pcolor(M)
+title('M matrix, is this supposed to by symmetric like this?')
+colorbar
 if plots
     figure
     bar(MAX(2,:),MAX(1,:),'g');

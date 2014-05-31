@@ -82,7 +82,9 @@ for j = 2:L
         end
     end
 end
-%%        
+M = M'+M
+%%       
+
 pcolor(M)
 title('M matrix, is this supposed to by symmetric like this?')
 colorbar
