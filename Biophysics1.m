@@ -82,17 +82,8 @@ for j = 2:L
         end
     end
 end
-%%
-dists = load('distances.txt');
-matSort = reshape(M)
-
-for j = 2:L
-    for i = 1:j-1
-        
-        
+%%        
     
-
-
 if plots
     figure
     bar(MAX(2,:),MAX(1,:),'g');
