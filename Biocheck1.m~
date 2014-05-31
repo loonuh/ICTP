@@ -1,0 +1,6 @@
+i = 1; %position
+a = 1; %nucleotide
+if exist('ww') ~= 0
+ww = load('ww.txt');
+fprintf('omega(i,a) = %5.2f',omega(i,a))
+matCheck(:,:) = ww(
