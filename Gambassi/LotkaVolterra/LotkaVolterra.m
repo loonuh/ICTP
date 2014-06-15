@@ -3,7 +3,7 @@ clear all
 
 maxIterations = 1000000;
 
-L = 200;
+L = 100;
 p1 = .5;
 p2 = .5;
 
@@ -43,7 +43,7 @@ W = [0      0       sigma   ;
 for iterations = 1:maxIterations
     iterations
     ocean = posCheck(ocean,W,mu);
-    if mod(iterations,5000) == 0
+    if mod(iterations,1500) == 0
         pcolor(ocean); shading flat; title('Lotka-Volterra Predator-Prey')
         colorbar();
         caxis([0 2])
